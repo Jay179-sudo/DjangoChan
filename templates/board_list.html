@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+    {% for board in board_list %}
+        {% if board.tag == "Animations" and request.path == "/boards/animations/" or board.tag == "Culture" and request.path == "/boards/culture/" or board.tag == "Video Games" and request.path == "/boards/videogames/" or board.tag == "Music and Photography" and request.path == "/boards/musicphotography/" %}
+        <div class="card m-3" style="width: 50%;">
+            <!-- <img src="..." class="card-img-top" alt="..."> -->
+            <div class="card-body">
+              <p class="fs-6 pre text-center"><h2 class="card-title d-inline text-center">{{board.title}}</h2>  {{board.date}} by {{board.author}}</p>
+              <p class="card-text">{{board.body}}</p>
+              <a href = "{% url 'delete' board.tag|lower board.pk %}">Delete</a>
+              <a href = "{% url 'update' board.tag|lower board.pk %}">Update</a>
+              
+            </div>
+          </div>
+        {% endif %}
+    {% endfor %}
+{% endblock %}
+
+

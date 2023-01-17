@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Home{% endblock title %}
+
+{% block content %}
+
+  {% if user.is_authenticated %}
+      <p class="fs-1 m-5 text-center">Hi, {{user.username}}!</p>
+  {% endif %}
+      <p class="fs-1 m-5 text-center">Welcome to Django-Chan!</p>
+      <img src="{% static 'images/logo.png' %}" class="m-5 rounded mx-auto d-block" height="10%" width="10%">
+      <p class="fs-3 m-5 text-start">Django-Chan is a simple text-based bulletin board where anyone can post comments and engage with each other. There are boards dedicated to a variety of topics, from animation and culture to videogames, music, and photography</p>
+      <p class="fs-2 m-5">Boards</p>
+      <div class="container m-5">
+          <div class="row row-cols-2">
+            <div class="col fs-4">• <a href = "{% url 'board' 'animations' %}">Animation</a></div>
+            <div class="col fs-4">• <a href = "{% url 'board' 'culture' %}">Culture</a></div>
+            <div class="col fs-4">• <a href = "{% url 'board' 'videogames' %}">Video Games</a></div>
+            <div class="col fs-4">• <a href = "{% url 'board' 'musicphotography' %}">Music and Photography</a></div>
+          </div>
+              
+        </div>
+  
+      
+
+        
+
+
+{% endblock content %}
