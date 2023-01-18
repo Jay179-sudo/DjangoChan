@@ -1,32 +1,35 @@
 from django.shortcuts import render
-from django.views.generic import ListView, DetailView, CreateView
-from django.views.generic.edit import UpdateView , DeleteView
+from django.views.generic import ListView, DetailView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
 # Create your views here.
 from .models import Board
 
-class ListView(LoginRequiredMixin, ListView):
-    model = Board
-    template_name="board_list.html"
 
-class DetailView(LoginRequiredMixin, DetailView):
+class BoardListView(LoginRequiredMixin, ListView):
     model = Board
-    template_name="board_detail.html"
+    template_name = "board_list.html"
 
-class DeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
-    
+
+class BoardDetailView(LoginRequiredMixin, DetailView):
     model = Board
-    template_name="board_delete.html"
-    success_url=reverse_lazy("home")
+    template_name = "board_detail.html"
 
-    
-    def test_func(self): # new
+
+class BoardDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+
+    model = Board
+    template_name = "board_delete.html"
+    success_url = reverse_lazy("home")
+
+    def test_func(self):  # new
         obj = self.get_object()
         return obj.author == self.request.user
 
-class UpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+
+class BoardUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Board
     template_name = "board_update.html"
     fields = (
@@ -34,19 +37,21 @@ class UpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         "body",
         "tag",
     )
-    def test_func(self): # new
+
+    def test_func(self):  # new
         obj = self.get_object()
         return obj.author == self.request.user
 
 
-class CreateView(LoginRequiredMixin, CreateView):
+class BoardCreateView(LoginRequiredMixin, CreateView):
     model = Board
-    template_name = "board_create.html"
+    template_name = "board_new.html"
     fields = (
-        "title",
-        "body",
-        "tag",
+    "title",
+    "body",
+    "tag",
     )
+
     def form_valid(self, form): # new
         form.instance.author = self.request.user
         return super().form_valid(form)
