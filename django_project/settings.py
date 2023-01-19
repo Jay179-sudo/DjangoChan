@@ -32,7 +32,7 @@ SECRET_KEY = env.str("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool("DEBUG", default=False)
 
-ALLOWED_HOSTS = ["https://*.railway.app", "localhost", "127.0.0.1", "djangochan-production.up.railway.app"]
+ALLOWED_HOSTS = ["https://*.railway.app", "localhost", "127.0.0.1", "web-production-954f.up.railway.app"]
 
 
 # Application definition
