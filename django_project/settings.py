@@ -11,21 +11,28 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from pathlib import Path
-
+from environs import Env
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+ # new
+
+env = Env() # new
+env.read_env()
+
+CORS_ORIGIN_ALLOW_ALL = True
+CSRF_TRUSTED_ORIGINS = ['https://*.railway.app']
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-q^@v*yq_wve-xz82yo6cqbu2!fp4@&$h7q6p6jtn=t3vj5e(#6'
+SECRET_KEY = env.str("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env.bool("DEBUG", default=False)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["https://*.railway.app", "localhost", "127.0.0.1", "djangochan-production.up.railway.app"]
 
 
 # Application definition
@@ -33,9 +40,11 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
+    "corsheaders",
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    "whitenoise.runserver_nostatic", 
     'django.contrib.staticfiles',
     "crispy_forms", # new
     "crispy_bootstrap5", 
@@ -45,12 +54,19 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    "whitenoise.middleware.WhiteNoiseMiddleware", 
+    "corsheaders.middleware.CorsMiddleware",
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+STATIC_URL = "/static/"
+STATICFILES_DIRS = [BASE_DIR / "static"] # new
+STATIC_ROOT = BASE_DIR / "staticfiles" # new
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage" 
 
 AUTH_USER_MODEL = "accounts.CustomUser" 
 
